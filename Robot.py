@@ -33,6 +33,7 @@ class BreadthFirstSearchRobot(Robot):
         n_node_expanded = 0  # count the number of nodes expanded during the algorithm run.
 
         while True:
+
             if curr_time() - start_time >= time_limit:
                 no_solution_found = True
                 no_solution_reason = "time limit exceeded"
@@ -44,10 +45,19 @@ class BreadthFirstSearchRobot(Robot):
                 no_solution_reason = "no solution exists"
                 break
 
+            #curr_val = Node.get_path(next_node)
+            #curr_val = Node(next_node).g_value
+            print(curr_val)
             self.close.add(next_node)
             ############################################################################################################
             # TODO (EX. 4.1): complete code here, delete exception
-            raise NotImplemented
+            for state, value in MazeProblem.expand_state(maze, next_node.state):
+                curr_node = Node(state, next_node, g_value=curr_val + value)
+                if not self.close.__contains__(curr_node):
+                    self.queue.add(curr_node)
+
+                print(f"state direction {state.robot_direction()}")
+                print(f"value {value}")
 
             ############################################################################################################
         # If we are here, then we didn't find a solution during the search
