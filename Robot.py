@@ -45,11 +45,9 @@ class BreadthFirstSearchRobot(Robot):
                 no_solution_reason = "no solution exists"
                 break
 
-            #curr_val = Node.get_path(next_node)
-            #curr_val = Node(next_node).g_value
-            print(curr_val)
+            curr_val = next_node.g_value
+            print(f"curr_val: {curr_val}")
             self.close.add(next_node)
-            ############################################################################################################
             # TODO (EX. 4.1): complete code here, delete exception
             for state, value in MazeProblem.expand_state(maze, next_node.state):
                 curr_node = Node(state, next_node, g_value=curr_val + value)
