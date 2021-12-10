@@ -46,17 +46,23 @@ class BreadthFirstSearchRobot(Robot):
                 break
 
             curr_val = next_node.g_value
-            print(f"curr_val: {curr_val}")
-            self.close.add(next_node)
+           # print(f"curr_val: {curr_val}")
+
             # TODO (EX. 4.1): complete code here, delete exception
+            n_node_expanded = n_node_expanded + 1
             for state, value in MazeProblem.expand_state(maze, next_node.state):
                 curr_node = Node(state, next_node, g_value=curr_val + value)
-                if not self.close.__contains__(curr_node):
+                if(maze.is_goal(state)):
+                    return GraphSearchSolution(curr_node, solve_time=curr_time() - start_time, n_node_expanded=n_node_expanded, no_solution_reason=None)
+
+
+                if curr_node.state not in self.close._collection and not self.queue.__contains__(curr_node.state):
                     self.queue.add(curr_node)
 
-                print(f"state direction {state.robot_direction()}")
-                print(f"value {value}")
-
+             #   print(f"state direction {state.robot_direction()}")
+              #  print(f"value {value}")
+            if next_node.state not in self.close._collection:
+                self.close.add(next_node)
             ############################################################################################################
         # If we are here, then we didn't find a solution during the search
         assert no_solution_found

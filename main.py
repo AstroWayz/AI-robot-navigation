@@ -8,4 +8,5 @@ from Experiments import *
 
 if __name__ == "__main__":
     print("hello world cruel ")
-    test_robot(BreadthFirstSearchRobot, [0, 1, 2, 3, 4, 5])
+   # a = solve_and_display(BreadthFirstSearchRobot, 1, False)
+    test_robot(BreadthFirstSearchRobot, [0 ,1 ,2 ,3 ,4,5])
