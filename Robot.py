@@ -45,10 +45,11 @@ class BreadthFirstSearchRobot(Robot):
                 no_solution_reason = "no solution exists"
                 break
 
-            curr_val = next_node.g_value
-           # print(f"curr_val: {curr_val}")
 
+            ############################################################################################################
             # TODO (EX. 4.1): complete code here, delete exception
+
+            curr_val = next_node.g_value
             n_node_expanded = n_node_expanded + 1
             for state, value in MazeProblem.expand_state(maze, next_node.state):
                 curr_node = Node(state, next_node, g_value=curr_val + value)
@@ -59,12 +60,9 @@ class BreadthFirstSearchRobot(Robot):
                 if curr_node.state not in self.close._collection and not self.queue.__contains__(curr_node.state):
                     self.queue.add(curr_node)
 
-             #   print(f"state direction {state.robot_direction()}")
-              #  print(f"value {value}")
             if next_node.state not in self.close._collection:
                 self.close.add(next_node)
             ############################################################################################################
-        # If we are here, then we didn't find a solution during the search
         assert no_solution_found
         return GraphSearchSolution(final_node=None, solve_time=curr_time() - start_time,
                                    n_node_expanded=n_node_expanded, no_solution_reason=no_solution_reason)
@@ -112,14 +110,29 @@ class BestFirstSearchRobot(Robot):
                 no_solution_reason = "no solution exists"
                 break
 
-            self.close.add(next_node)
+            if next_node.state not in self.close:
+                self.close.add(next_node)
             if maze_problem.is_goal(next_node.state):
                 if not compute_all_dists:  # we will use this later, don't change
                     return GraphSearchSolution(next_node, solve_time=curr_time() - start_time,
                                                n_node_expanded=n_node_expanded, init_heuristic_time=init_heuristic_time)
             ############################################################################################################
             # TODO (EX. 5.1): complete code here, delete exception
-            raise NotImplemented
+            curr_val = next_node.g_value
+            n_node_expanded = n_node_expanded + 1
+            for state, value in MazeProblem.expand_state(maze_problem, next_node.state):
+                new_node = Node(state, next_node, g_value=curr_val + value)
+                node_priority = self._calc_node_priority(new_node)
+                if new_node.state not in self.close and not self.open.__contains__(new_node.state):
+                    self.open.add(new_node, node_priority)
+
+                if new_node.state in self.open:
+                    tmp_node = self.open.get_node(state)
+                    if node_priority < self._calc_node_priority(tmp_node):
+                        self.open.remove_node(tmp_node)
+                        self.open.add(new_node, node_priority)
+
+
 
             ############################################################################################################
 
@@ -139,7 +152,8 @@ class UniformCostSearchRobot(BestFirstSearchRobot):
 
     def _calc_node_priority(self, node):
         # TODO (Ex. 5.2): complete code here (just return the g value), delete exception
-        raise NotImplemented
+
+        return node.g_value
 
 class WAStartRobot(BestFirstSearchRobot):
     def __init__(self, heuristic, w=0.5, **h_params):
