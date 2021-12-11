@@ -126,12 +126,18 @@ class BestFirstSearchRobot(Robot):
                 if new_node.state not in self.close and not self.open.__contains__(new_node.state):
                     self.open.add(new_node, node_priority)
 
-                if new_node.state in self.open:
-                    tmp_node = self.open.get_node(state)
-                    if node_priority < self._calc_node_priority(tmp_node):
+                elif new_node.state in self.open:
+                     tmp_node = self.open.get_node(state)
+                     tmp_priority = self._calc_node_priority(tmp_node)
+                     if node_priority < tmp_priority:
                         self.open.remove_node(tmp_node)
                         self.open.add(new_node, node_priority)
-
+                else:
+                    tmp_node = self.close.get_node(state)
+                    tmp_priority = self._calc_node_priority(tmp_node)
+                    if node_priority < tmp_priority:
+                        self.open.add(new_node, node_priority)
+                        self.close.remove_node(tmp_node)
 
 
             ############################################################################################################
@@ -152,7 +158,6 @@ class UniformCostSearchRobot(BestFirstSearchRobot):
 
     def _calc_node_priority(self, node):
         # TODO (Ex. 5.2): complete code here (just return the g value), delete exception
-
         return node.g_value
 
 class WAStartRobot(BestFirstSearchRobot):
@@ -172,4 +177,7 @@ class WAStartRobot(BestFirstSearchRobot):
 
     def _calc_node_priority(self, node):
         # TODO (Ex. 7.1): complete code here, delete exception
-        raise NotImplemented
+        res = (1-self.w) * node.g_value + self.w * self.heuristic(node.state)
+
+        return res
+

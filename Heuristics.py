@@ -6,7 +6,13 @@ from GraphSearch import NodesCollection
 
 def tail_manhattan_heuristic(state: MazeState):
     # TODO (EX 7.2), implement heuristic, delete exception
-    raise NotImplemented
+    tx = state.tail[0] - state.maze_problem.tail_goal[0]
+    ty =state.tail[1] - state.maze_problem.tail_goal[1]
+    if tx < 0:
+        tx = tx*-1
+    if ty < 0:
+        ty = ty*-1
+    return (tx+ty) * state.maze_problem.forward_cost
 
 
 def center_manhattan_heuristic(state: MazeState):
@@ -28,8 +34,7 @@ class ShorterRobotHeuristic:
                                             initial_head=...,
                                             initial_tail=...,
                                             head_goal=shorter_robot_head_goal,  # doesn't matter, don't change
-                                            tail_goal=shorter_robot_tail_goal)  # doesn't matter, don't change
-        self.node_dists = ...().solve(..., compute_all_dists=True)
+                                            tail_goal=shorter_robot_tail_goal)  # doesn't matter, don't change        self.node_dists = ...().solve(..., compute_all_dists=True)
         ################################################################################################################
 
         assert isinstance(self.node_dists, NodesCollection)
