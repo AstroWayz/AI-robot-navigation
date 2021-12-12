@@ -14,10 +14,23 @@ def tail_manhattan_heuristic(state: MazeState):
         ty = ty*-1
     return (tx+ty) * state.maze_problem.forward_cost
 
+def get_center(i1, i2):
+    center = 0
+    if i1 == i2:
+        center = i1
+    else:
+        center = abs(i1-i2)//2 + 1
+    return center
 
 def center_manhattan_heuristic(state: MazeState):
     # TODO (EX 9.2), implement heuristic, delete exception
-    raise NotImplemented
+    center_state_x = get_center(state.head[0], state.tail[0])
+    center_state_y = get_center(state.head[1], state.tail[1])
+    center_maze_x = get_center(state.maze_problem.head_goal[0], state.maze_problem.tail_goal[0])
+    center_maze_y = get_center(state.maze_problem.head_goal[1], state.maze_problem.tail_goal[1])
+    res = abs(center_state_y - center_maze_y) + abs(center_state_x - center_maze_x)
+    return res
+
 
 
 class ShorterRobotHeuristic:
