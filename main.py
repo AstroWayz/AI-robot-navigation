@@ -9,10 +9,10 @@ from Experiments import *
 
 
 if __name__ == "__main__":
-
-    a = solve_and_display(WAStartRobot, 4, False, heuristic = tail_manhattan_heuristic)
-     # a = solve_and_display(UniformCostSearchRobot, 1, False)
-    #test_robot(UniformCostSearchRobot, [0 ,1 ,2 ,3 ,4,5])
+    w_experiment(0)
+    a = solve_and_display(WAStartRobot, 0, False, heuristic = center_manhattan_heuristic)
+    # a = solve_and_display(UniformCostSearchRobot, 1, False)
+    # test_robot(UniformCostSearchRobot, [0 ,1 ,2 ,3 ,4,5])
     # test_robot(WAStartRobot, [0 ,1 ,2 ,3 ,4,5], heuristic = tail_manhattan_heuristic)
     # test_robot(BreadthFirstSearchRobot, [1 ,3 ])
-   # test_robot(UniformCostSearchRobot, [1 ,3 ])
+    # test_robot(UniformCostSearchRobot, [1 ,3 ])
