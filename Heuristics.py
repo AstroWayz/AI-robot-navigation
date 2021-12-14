@@ -15,7 +15,7 @@ def get_center(i1, i2):
     if i1 == i2:
         center = i1
     else:
-        center = abs(i1+i2)//2 + 1
+        center = abs(i1+i2)//2
     return center
 
 def center_manhattan_heuristic(state: MazeState):
@@ -50,6 +50,7 @@ class ShorterRobotHeuristic:
 
     def _compute_shorter_head_and_tails(self, head, tail):
         # TODO (EX. 13.1): complete code here, delete exception
+        
         raise NotImplemented
 
     def __call__(self, state: MazeState):
