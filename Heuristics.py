@@ -82,7 +82,7 @@ class ShorterRobotHeuristic:
     def __call__(self, state: MazeState):
         # TODO (EX. 13.3): replace each three dots, delete exception
         shorter_head_location, shorter_tail_location = self._compute_shorter_head_and_tails(state.head, state.tail)
-        new_state = MazeState(self.new_maze_problem, head=shorter_head_location, tail=shorter_tail_location)
+        new_state = MazeState(self.new_maze_problem, head=shorter_tail_location, tail=shorter_head_location)
         if new_state in self.node_dists:
             node = self.node_dists.get_node(new_state)
             return node.g_value
