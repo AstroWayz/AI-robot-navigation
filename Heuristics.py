@@ -8,15 +8,17 @@ def tail_manhattan_heuristic(state: MazeState):
     # TODO (EX 7.2), implement heuristic, delete exception
     tx = abs(state.tail[0] - state.maze_problem.tail_goal[0])
     ty = abs(state.tail[1] - state.maze_problem.tail_goal[1])
-    return (tx+ty) * state.maze_problem.forward_cost
+    return (tx + ty) * state.maze_problem.forward_cost
+
 
 def get_center(i1, i2):
     center = 0
     if i1 == i2:
         center = i1
     else:
-        center = abs(i1+i2)//2
+        center = abs(i1 + i2) // 2
     return center
+
 
 def center_manhattan_heuristic(state: MazeState):
     # TODO (EX 9.2), implement heuristic, delete exception
@@ -28,7 +30,6 @@ def center_manhattan_heuristic(state: MazeState):
     return res
 
 
-
 class ShorterRobotHeuristic:
     def __init__(self, maze_problem: MazeProblem, k):
         assert k % 2 == 0, "odd must be even"
@@ -37,13 +38,19 @@ class ShorterRobotHeuristic:
         self.k = k
         ################################################################################################################
         # TODO (EX. 13.2): replace all three dots, delete exception
-        raise NotImplemented
-        shorter_robot_head_goal, shorter_robot_tail_goal = ...
-        self.new_maze_problem = MazeProblem(maze_map=...,
-                                            initial_head=...,
-                                            initial_tail=...,
+        shorter_robot_head_goal, shorter_robot_tail_goal = self._compute_shorter_head_and_tails(maze_problem.head_goal,
+                                                                                                maze_problem.tail_goal)
+
+        shorter_robot_head_init, shorter_robot_tail_init = self._compute_shorter_head_and_tails(
+            maze_problem.initial_state.head,
+            maze_problem.initial_state.tail)
+
+        self.new_maze_problem = MazeProblem(maze_map=maze_problem.maze_map,
+                                            initial_head=shorter_robot_head_init,
+                                            initial_tail=shorter_robot_tail_init,
                                             head_goal=shorter_robot_head_goal,  # doesn't matter, don't change
-                                            tail_goal=shorter_robot_tail_goal)  # doesn't matter, don't change        self.node_dists = ...().solve(..., compute_all_dists=True)
+                                            tail_goal=shorter_robot_tail_goal)  # doesn't matter, don't change
+        # self.node_dists = ...().solve(..., compute_all_dists=True)
         ################################################################################################################
 
         assert isinstance(self.node_dists, NodesCollection)
@@ -69,7 +76,6 @@ class ShorterRobotHeuristic:
             new_tail -= k_np
 
         return new_head, new_tail
-        
 
     def __call__(self, state: MazeState):
         # TODO (EX. 13.3): replace each three dots, delete exception
@@ -81,4 +87,4 @@ class ShorterRobotHeuristic:
             return ...
         else:
             return ...  # what should we return in this case, so that the heuristic would be as informative as possible
-                        # but still admissible
+            # but still admissible
