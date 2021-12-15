@@ -12,7 +12,6 @@ def tail_manhattan_heuristic(state: MazeState):
 
 
 def get_center(i1, i2):
-    center = 0
     if i1 == i2:
         center = i1
     else:
@@ -38,53 +37,56 @@ class ShorterRobotHeuristic:
         self.k = k
         ################################################################################################################
         # TODO (EX. 13.2): replace all three dots, delete exception
-        shorter_robot_head_goal, shorter_robot_tail_goal = self._compute_shorter_head_and_tails(maze_problem.head_goal,
-                                                                                                maze_problem.tail_goal)
-
-        shorter_robot_head_init, shorter_robot_tail_init = self._compute_shorter_head_and_tails(
-            maze_problem.initial_state.head,
-            maze_problem.initial_state.tail)
-
+        shorter_robot_head_goal, shorter_robot_tail_goal = self._compute_shorter_head_and_tails(
+            maze_problem.head_goal,
+            maze_problem.tail_goal)
+        #
         self.new_maze_problem = MazeProblem(maze_map=maze_problem.maze_map,
-                                            initial_head=shorter_robot_head_init,
-                                            initial_tail=shorter_robot_tail_init,
+                                            initial_head=shorter_robot_tail_goal,
+                                            initial_tail=shorter_robot_head_goal,
                                             head_goal=shorter_robot_head_goal,  # doesn't matter, don't change
                                             tail_goal=shorter_robot_tail_goal)  # doesn't matter, don't change
         # self.node_dists = ...().solve(..., compute_all_dists=True)
+        self.node_dists = UniformCostSearchRobot().solve(self.new_maze_problem,
+                                                         compute_all_dists=True)
         ################################################################################################################
 
         assert isinstance(self.node_dists, NodesCollection)
 
     def _compute_shorter_head_and_tails(self, head, tail):
         # TODO (EX. 13.1): complete code here, delete exception
-        new_head = head
-        new_tail = tail
-        k_np = np.zeros((2,), dtype=int)
+        k_np = np.array([0, 0])
 
         # if the head and tail have the same x, then the values of the y will change
         # if the head and tail dont have the same x, then the values of x will change
         if head[0] == tail[0]:
-            k_np[1] = self.k // 2
-        else:
-            k_np[0] = self.k // 2
+            k_np[1] = self.k / 2
+            if head[1] > tail[1]:
+                new_head = np.add(head, np.negative(k_np))
+                new_tail = np.add(tail, k_np)
+            else:
+                new_head = np.add(head, k_np)
+                new_tail = np.add(tail, np.negative(k_np))
 
-        if np.max(head) > np.max(tail):
-            new_head -= k_np
-            new_tail += k_np
         else:
-            new_head += k_np
-            new_tail -= k_np
+            k_np[0] = self.k / 2
+            if head[0] > tail[0]:
+                new_head = np.add(head, np.negative(k_np))
+                new_tail = np.add(tail, k_np)
+            else:
+                new_head = np.add(head, k_np)
+                new_tail = np.add(tail, np.negative(k_np))
 
         return new_head, new_tail
 
     def __call__(self, state: MazeState):
         # TODO (EX. 13.3): replace each three dots, delete exception
-        raise NotImplemented
-        shorter_head_location, shorter_tail_location = ...
-        new_state = MazeState(..., head=..., tail=...)
+        shorter_head_location, shorter_tail_location = self._compute_shorter_head_and_tails(state.head, state.tail)
+        new_state = MazeState(self.new_maze_problem, head=shorter_head_location, tail=shorter_tail_location)
         if new_state in self.node_dists:
             node = self.node_dists.get_node(new_state)
-            return ...
+            return node.g_value
         else:
-            return ...  # what should we return in this case, so that the heuristic would be as informative as possible
+            return float("inf")
+            # what should we return in this case, so that the heuristic would be as informative as possible
             # but still admissible
