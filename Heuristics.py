@@ -50,8 +50,26 @@ class ShorterRobotHeuristic:
 
     def _compute_shorter_head_and_tails(self, head, tail):
         # TODO (EX. 13.1): complete code here, delete exception
+        new_head = head
+        new_tail = tail
+        k_np = np.zeros((2,), dtype=int)
+
+        # if the head and tail have the same x, then the values of the y will change
+        # if the head and tail dont have the same x, then the values of x will change
+        if head[0] == tail[0]:
+            k_np[1] = self.k // 2
+        else:
+            k_np[0] = self.k // 2
+
+        if np.max(head) > np.max(tail):
+            new_head -= k_np
+            new_tail += k_np
+        else:
+            new_head += k_np
+            new_tail -= k_np
+
+        return new_head, new_tail
         
-        raise NotImplemented
 
     def __call__(self, state: MazeState):
         # TODO (EX. 13.3): replace each three dots, delete exception
