@@ -26,7 +26,7 @@ def center_manhattan_heuristic(state: MazeState):
     center_maze_x = get_center(state.maze_problem.head_goal[0], state.maze_problem.tail_goal[0])
     center_maze_y = get_center(state.maze_problem.head_goal[1], state.maze_problem.tail_goal[1])
     res = abs(center_state_y - center_maze_y) + abs(center_state_x - center_maze_x)
-    return res
+    return res * state.maze_problem.forward_cost
 
 
 class ShorterRobotHeuristic:
