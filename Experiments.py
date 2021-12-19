@@ -42,7 +42,11 @@ def shorter_robot_heuristic_experiment(maze_index):
     for k in ks:
         ################################################################################################################
         # TODO (EX. 16.3): complete code here, delete exception
-        raise NotImplemented
+        sol = WAStartRobot(heuristic=ShorterRobotHeuristic, k=k).solve(problem)
+        solve_time = sol.solve_time
+        init_time = sol.init_heuristic_time
+        solve_times.append(solve_time)
+        heuristic_init_times.append(init_time)
 
         ################################################################################################################
 
